@@ -12,6 +12,7 @@ import InsuranceIcon from '@mui/icons-material/Description';
 import TariffIcon from '@mui/icons-material/ListAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ClauseIcon from '@mui/icons-material/Assignment';
+import PolicyIcon from '@mui/icons-material/Receipt';
 
 const menuItems = [
   {
@@ -26,6 +27,12 @@ const menuItems = [
     icon: <TariffIcon fontSize="large" color="primary" />,
     path: '/tariff-presets',
     buttonText: 'Управление на тарифни пакети'
+  }, {
+    title: 'Застрахователни полици',
+    description: 'Преглед и управление на застрахователни полици.',
+    icon: <PolicyIcon fontSize="large" color="primary" />,
+    path: '/insurance-policies',
+    buttonText: 'Преглед на полици'
   }, {
     title: 'Конфигурация',
     description: 'Конфигуриране на настройките на калкулатора на имоти.',

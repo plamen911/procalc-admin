@@ -24,6 +24,8 @@ import UserProfile from './pages/Profile/UserProfile';
 import UsersList from './pages/Users/UsersList';
 import UserEdit from './pages/Users/UserEdit';
 import UserCreate from './pages/Users/UserCreate';
+import InsurancePoliciesList from './pages/InsurancePolicies/InsurancePoliciesList';
+import InsurancePolicyDetails from './pages/InsurancePolicies/InsurancePolicyDetails';
 
 // Create a theme instance
 const theme = createTheme({
@@ -84,7 +86,6 @@ function App() {
                       <Route path="/app-configs" element={<AppConfigsList />} />
                       <Route path="/app-configs/edit/:id" element={<AppConfigEdit />} />
 
-
                       {/* User Profile Route */}
                       <Route path="/profile" element={<UserProfile />} />
 
@@ -92,6 +93,10 @@ function App() {
                       <Route path="/users" element={<UsersList />} />
                       <Route path="/users/create" element={<UserCreate />} />
                       <Route path="/users/edit/:id" element={<UserEdit />} />
+
+                      {/* Insurance Policies Routes */}
+                      <Route path="/insurance-policies" element={<InsurancePoliciesList />} />
+                      <Route path="/insurance-policies/:id" element={<InsurancePolicyDetails />} />
                     </Routes>
                   </Container>
                 </>

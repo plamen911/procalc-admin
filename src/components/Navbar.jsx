@@ -18,6 +18,7 @@ import { useAuth } from './AuthProvider';
 const pages = [
   { name: 'Застрахователни клаузи', path: '/insurance-clauses' },
   { name: 'Тарифни пакети', path: '/tariff-presets' },
+  { name: 'Застрахователни полици', path: '/insurance-policies' },
   { name: 'Конфигурация', path: '/app-configs' },
   { name: 'Потребители', path: '/users' }
 ];
