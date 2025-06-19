@@ -169,7 +169,7 @@ const InsurancePolicyDetails = () => {
                     {policy.settlement?.name || '-'}
                   </Typography>
                 </Box>
-                
+
                 {policy.propertyAddress && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body2" color="text.secondary">Адрес на имота:</Typography>
@@ -248,8 +248,28 @@ const InsurancePolicyDetails = () => {
                   )}
                   {policy.propertyOwnerIdNumber && (
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">ЕГН/ЛНЧ:</Typography>
+                      <Typography variant="body2" color="text.secondary">{policy.propertyOwnerIdNumberType?.name || 'ЕГН/ЛНЧ'}:</Typography>
                       <Typography variant="body2">{policy.propertyOwnerIdNumber}</Typography>
+                    </Box>
+                  )}
+                  {policy.propertyOwnerBirthDate && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Дата на раждане:</Typography>
+                      <Typography variant="body2">{policy.propertyOwnerBirthDate}</Typography>
+                    </Box>
+                  )}
+                  {policy.propertyOwnerNationality && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Националност:</Typography>
+                      <Typography variant="body2">{policy.propertyOwnerNationality.name}</Typography>
+                    </Box>
+                  )}
+                  {policy.propertyOwnerGender && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Пол:</Typography>
+                      <Typography variant="body2">
+                        {policy.propertyOwnerGender === 'male' ? 'Мъж' : 'Жена'}
+                      </Typography>
                     </Box>
                   )}
                 </Box>
