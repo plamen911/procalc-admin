@@ -78,104 +78,180 @@ const InsurancePolicyDetails = () => {
         <Typography variant="h5" component="h1" color="primary">
           Детайли за полица {policy.code}
         </Typography>
+        <Typography variant="body2" sx={{ ml: 2, color: 'text.secondary' }}>
+          {InsurancePolicyService.formatDate(policy.createdAt)}
+        </Typography>
       </Box>
 
-      <Grid container spacing={3}>
-        {/* Policy Overview */}
-        <Grid item xs={12} md={4}>
+      {/* Tariff Info Section */}
+      <Card elevation={2} sx={{ mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom color="primary">
+            Информация за тарифата
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="body2" color="text.secondary">Избрано покритие:</Typography>
+            <Typography variant="body2" fontWeight="bold">
+              {policy.tariffPreset ? policy.tariffPreset.name : policy.tariffPresetName || 'Пакет по избор'}
+            </Typography>
+            {policy.promotionalCode && (
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                Промо код: <b>{policy.promotionalCode.code} ({policy.promotionalCodeDiscount}%)</b>
+              </Typography>
+            )}
+          </Box>
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Клауза</TableCell>
+                  <TableCell>Тарифен номер</TableCell>
+                  <TableCell align="right">Застрахователна сума</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {policy.insurancePolicyClauses && policy.insurancePolicyClauses.length > 0 &&
+                  policy.insurancePolicyClauses
+                    .sort((a, b) => a.position - b.position)
+                    .map((clause) => (
+                      <TableRow key={clause.id}>
+                        <TableCell>
+                          <Typography variant="body2" fontWeight="medium">
+                            {clause.name}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>{clause.tariffNumber || '-'}</TableCell>
+                        <TableCell align="right">
+                          <Typography variant="body2" fontWeight="bold" color="primary">
+                            {InsurancePolicyService.formatCurrency(clause.tariffAmount)}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                {/* Financial statistics rows */}
+                <TableRow>
+                  <TableCell colSpan={2} align="right"><b>Застрахователна премия</b></TableCell>
+                  <TableCell align="right"><b>{InsurancePolicyService.formatCurrency(policy.subtotal)}</b></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2} align="right"><b>Отстъпка</b></TableCell>
+                  <TableCell align="right"><b>{policy.discount}%</b></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2} align="right"><b>Данък</b></TableCell>
+                  <TableCell align="right"><b>{InsurancePolicyService.formatCurrency(policy.subtotalTax)}</b></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2} align="right"><b>Обща сума</b></TableCell>
+                  <TableCell align="right"><b>{InsurancePolicyService.formatCurrency(policy.total)}</b></TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </CardContent>
+      </Card>
+
+      {/* Property and Insurer Info Sections - 2 cols on desktop, 1 col on mobile */}
+      <Grid container spacing={3} sx={{ mb: 3 }}>
+        {/* Property Info */}
+        <Grid item xs={12} md={6}>
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom color="primary">
-                Обща информация
+                Данни за имота
               </Typography>
               <Divider sx={{ mb: 2 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Код на полицата:</Typography>
-                  <Typography variant="body2" fontWeight="bold">{policy.code}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Дата на създаване:</Typography>
-                  <Typography variant="body2">{InsurancePolicyService.formatDate(policy.createdAt)}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Последна промяна:</Typography>
-                  <Typography variant="body2">{InsurancePolicyService.formatDate(policy.updatedAt)}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Тарифен план:</Typography>
-                  <Typography variant="body2">
-                    {policy.tariffPreset ? policy.tariffPreset.name : policy.tariffPresetName || 'Пакет по избор'}
+                  <Typography variant="body2" color="text.secondary">Населено място:</Typography>
+                  <Typography variant="body2" fontWeight="bold">
+                    {policy.settlement?.name || '-'}
                   </Typography>
                 </Box>
-                {policy.promotionalCode && (
+                
+                {policy.propertyAddress && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Промо код:</Typography>
-                    <Typography variant="body2">
-                      {policy.promotionalCode.code} ({policy.promotionalCodeDiscount}%)
-                    </Typography>
+                    <Typography variant="body2" color="text.secondary">Адрес на имота:</Typography>
+                    <Typography variant="body2">{policy.propertyAddress}</Typography>
                   </Box>
                 )}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Тип имот:</Typography>
+                  <Typography variant="body2">{policy.estateType?.name || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Вид имот:</Typography>
+                  <Typography variant="body2">{policy.estateSubtype?.name || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Отстояние от вода:</Typography>
+                  <Typography variant="body2">{policy.distanceToWater?.name || '-'}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">РЗП:</Typography>
+                  <Typography variant="body2">{policy.areaSqMeters ? `${policy.areaSqMeters} кв.м.` : '-'}</Typography>
+                </Box>
               </Box>
+              {/* Property Checklist Table */}
+              {policy.propertyChecklistItems && policy.propertyChecklistItems.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="subtitle1" color="primary" sx={{ mb: 1 }}>
+                    Характеристики на имота
+                  </Typography>
+                  <TableContainer>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Характеристика</TableCell>
+                          <TableCell align="right">Стойност</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {policy.propertyChecklistItems.map((item) => (
+                          <TableRow key={item.id}>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell align="right">
+                              <b>{item.value ? 'Да' : 'Не'}</b>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              )}
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Financial Summary */}
-        <Grid item xs={12} md={8}>
-          <Card elevation={2}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom color="primary">
-                Финансова информация
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              <Grid container spacing={2}>
-                <Grid item xs={6} sm={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-                    <Typography variant="h6" color="primary">
-                      {InsurancePolicyService.formatCurrency(policy.subtotal)}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Застрахователна премия
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-                    <Typography variant="h6" color="primary">
-                      {policy.discount}%
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Отстъпка
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-                    <Typography variant="h6" color="primary">
-                      {InsurancePolicyService.formatCurrency(policy.subtotalTax)}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Данък
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={6} sm={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'primary.main', borderRadius: 1 }}>
-                    <Typography variant="h6" color="white">
-                      {InsurancePolicyService.formatCurrency(policy.total)}
-                    </Typography>
-                    <Typography variant="caption" color="white">
-                      Обща сума
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Insurer Information */}
+        {/* Owner Info */}
+        {(policy.propertyOwnerName || policy.propertyOwnerIdNumber) && (
+          <Grid item xs={12} md={6}>
+            <Card elevation={2}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom color="primary">
+                  Данни за собственика
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {policy.propertyOwnerName && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Име:</Typography>
+                      <Typography variant="body2" fontWeight="bold">{policy.propertyOwnerName}</Typography>
+                    </Box>
+                  )}
+                  {policy.propertyOwnerIdNumber && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">ЕГН/ЛНЧ:</Typography>
+                      <Typography variant="body2">{policy.propertyOwnerIdNumber}</Typography>
+                    </Box>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
+        {/* Insurer Info */}
         <Grid item xs={12} md={6}>
           <Card elevation={2}>
             <CardContent>
@@ -189,12 +265,8 @@ const InsurancePolicyDetails = () => {
                   <Typography variant="body2" fontWeight="bold">{policy.fullName || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">ЕГН/ЛНЧ:</Typography>
+                  <Typography variant="body2" color="text.secondary">{policy.idNumberType?.name || '-'}:</Typography>
                   <Typography variant="body2">{policy.idNumber || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Тип документ:</Typography>
-                  <Typography variant="body2">{policy.idNumberType?.name || '-'}</Typography>
                 </Box>
                 {policy.birthDate && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -240,130 +312,6 @@ const InsurancePolicyDetails = () => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Property Information */}
-        <Grid item xs={12} md={6}>
-          <Card elevation={2}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom color="primary">
-                Данни за имота
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Населено място:</Typography>
-                  <Typography variant="body2" fontWeight="bold">{policy.settlement?.name || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Тип имот:</Typography>
-                  <Typography variant="body2">{policy.estateType?.name || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Вид имот:</Typography>
-                  <Typography variant="body2">{policy.estateSubtype?.name || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Отстояние от вода:</Typography>
-                  <Typography variant="body2">{policy.distanceToWater?.name || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">РЗП:</Typography>
-                  <Typography variant="body2">{policy.areaSqMeters ? `${policy.areaSqMeters} кв.м.` : '-'}</Typography>
-                </Box>
-                {policy.propertyAddress && (
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Адрес на имота:</Typography>
-                    <Typography variant="body2">{policy.propertyAddress}</Typography>
-                  </Box>
-                )}
-                {policy.propertyOwnerName && (
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Собственик:</Typography>
-                    <Typography variant="body2">{policy.propertyOwnerName}</Typography>
-                  </Box>
-                )}
-                {policy.propertyOwnerIdNumber && (
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">ЕГН/ЛНЧ на собственика:</Typography>
-                    <Typography variant="body2">{policy.propertyOwnerIdNumber}</Typography>
-                  </Box>
-                )}
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Insurance Clauses */}
-        {policy.insurancePolicyClauses && policy.insurancePolicyClauses.length > 0 && (
-          <Grid item xs={12}>
-            <Card elevation={2}>
-              <CardContent>
-                <Typography variant="h6" gutterBottom color="primary">
-                  Покрити рискове
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
-                <TableContainer>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Клауза</TableCell>
-                        <TableCell>Тарифен номер</TableCell>
-                        <TableCell align="right">Застрахователна сума</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {policy.insurancePolicyClauses
-                        .sort((a, b) => a.position - b.position)
-                        .map((clause) => (
-                        <TableRow key={clause.id}>
-                          <TableCell>
-                            <Typography variant="body2" fontWeight="medium">
-                              {clause.name}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>{clause.tariffNumber || '-'}</TableCell>
-                          <TableCell align="right">
-                            <Typography variant="body2" fontWeight="bold" color="primary">
-                              {InsurancePolicyService.formatCurrency(clause.tariffAmount)}
-                            </Typography>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </CardContent>
-            </Card>
-          </Grid>
-        )}
-
-        {/* Property Checklist */}
-        {policy.propertyChecklistItems && policy.propertyChecklistItems.length > 0 && (
-          <Grid item xs={12}>
-            <Card elevation={2}>
-              <CardContent>
-                <Typography variant="h6" gutterBottom color="primary">
-                  Контролен списък за имота
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
-                <Grid container spacing={2}>
-                  {policy.propertyChecklistItems.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} key={item.id}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1 }}>
-                        <Typography variant="body2">{item.name}:</Typography>
-                        <Chip
-                          label={item.value ? 'Да' : 'Не'}
-                          color={item.value ? 'success' : 'error'}
-                          size="small"
-                        />
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        )}
       </Grid>
     </Box>
   );
