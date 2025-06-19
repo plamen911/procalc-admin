@@ -178,7 +178,7 @@ const InsurancePolicyDetails = () => {
                 )}
                 {policy.propertyAdditionalInfo && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Допълнителни данни за имота:</Typography>
+                    <Typography variant="body2" color="text.secondary">Допълнителни пояснения:</Typography>
                     <Typography variant="body2">{policy.propertyAdditionalInfo}</Typography>
                   </Box>
                 )}
