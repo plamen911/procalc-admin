@@ -106,7 +106,7 @@ const InsurancePolicyDetails = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Клауза</TableCell>
-                  <TableCell>Тарифен номер</TableCell>
+                  <TableCell>Тарифно число</TableCell>
                   <TableCell align="right">Застрахователна сума</TableCell>
                 </TableRow>
               </TableHead>
