@@ -272,6 +272,18 @@ const InsurancePolicyDetails = () => {
                       </Typography>
                     </Box>
                   )}
+                  {policy.propertyOwnerSettlement && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Населено място:</Typography>
+                      <Typography variant="body2">{policy.propertyOwnerSettlement.name}</Typography>
+                    </Box>
+                  )}
+                  {policy.propertyOwnerPermanentAddress && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Постоянен адрес:</Typography>
+                      <Typography variant="body2">{policy.propertyOwnerPermanentAddress}</Typography>
+                    </Box>
+                  )}
                 </Box>
               </CardContent>
             </Card>
