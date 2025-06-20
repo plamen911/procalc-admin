@@ -96,9 +96,9 @@ const InsurancePolicyDetails = () => {
               {policy.tariffPreset ? policy.tariffPreset.name : policy.tariffPresetName || 'Пакет по избор'}
             </Typography>
             {policy.promotionalCode && (
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Промо код: <b>{policy.promotionalCode.code} ({policy.promotionalCodeDiscount}%)</b>
-              </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  Промо код: <b>{policy.promotionalCode.code} ({policy.promotionalCodeDiscount}%)</b>
+                </Typography>
             )}
           </Box>
           <TableContainer>
@@ -299,7 +299,7 @@ const InsurancePolicyDetails = () => {
               <Divider sx={{ mb: 2 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Име:</Typography>
+                  <Typography variant="body2" color="text.secondary">{policy.personRole?.name || 'Име'}:</Typography>
                   <Typography variant="body2" fontWeight="bold">{policy.fullName || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -312,6 +312,12 @@ const InsurancePolicyDetails = () => {
                     <Typography variant="body2">{policy.birthDate}</Typography>
                   </Box>
                 )}
+                {policy.insurerNationality && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Националност:</Typography>
+                      <Typography variant="body2">{policy.insurerNationality.name}</Typography>
+                    </Box>
+                )}
                 {policy.gender && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body2" color="text.secondary">Пол:</Typography>
@@ -321,30 +327,20 @@ const InsurancePolicyDetails = () => {
                   </Box>
                 )}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Телефон:</Typography>
-                  <Typography variant="body2">{policy.phone || '-'}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Имейл:</Typography>
-                  <Typography variant="body2">{policy.email || '-'}</Typography>
+                  <Typography variant="body2" color="text.secondary">Населено място:</Typography>
+                  <Typography variant="body2">{policy.insurerSettlement?.name || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography variant="body2" color="text.secondary">Адрес:</Typography>
                   <Typography variant="body2">{policy.permanentAddress || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Населено място:</Typography>
-                  <Typography variant="body2">{policy.insurerSettlement?.name || '-'}</Typography>
+                  <Typography variant="body2" color="text.secondary">Телефон:</Typography>
+                  <Typography variant="body2">{policy.phone || '-'}</Typography>
                 </Box>
-                {policy.insurerNationality && (
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Националност:</Typography>
-                    <Typography variant="body2">{policy.insurerNationality.name}</Typography>
-                  </Box>
-                )}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="body2" color="text.secondary">Роля:</Typography>
-                  <Typography variant="body2">{policy.personRole?.name || '-'}</Typography>
+                  <Typography variant="body2" color="text.secondary">Имейл:</Typography>
+                  <Typography variant="body2">{policy.email || '-'}</Typography>
                 </Box>
               </Box>
             </CardContent>
