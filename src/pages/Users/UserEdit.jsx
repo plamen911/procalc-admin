@@ -212,9 +212,10 @@ const UserEdit = () => {
 
   const handleRoleChange = (role) => {
     const roleValue = role.value;
-    const newRoles = user.roles.includes(roleValue)
-      ? user.roles.filter(r => r !== roleValue)
-      : [...user.roles, roleValue];
+    const currentRoles = Array.isArray(user.roles) ? user.roles : [];
+    const newRoles = currentRoles.includes(roleValue)
+      ? currentRoles.filter(r => r !== roleValue)
+      : [...currentRoles, roleValue];
 
     setUser({
       ...user,
@@ -332,7 +333,7 @@ const UserEdit = () => {
                       key={role.value}
                       control={
                         <Checkbox
-                          checked={user.roles.includes(role.value)}
+                          checked={Array.isArray(user.roles) && user.roles.includes(role.value)}
                           onChange={() => handleRoleChange(role)}
                           name={role.value}
                           size="small"

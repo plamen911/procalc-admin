@@ -186,7 +186,7 @@ const UsersList = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Typography variant="body2" color="text.secondary">Роли:</Typography>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 0.5 }}>
-                        {user.roles.filter(role => role !== 'ROLE_USER').map((role) => (
+                        {user.roles && Array.isArray(user.roles) && user.roles.filter(role => role !== 'ROLE_USER').map((role) => (
                           <Chip 
                             key={role}
                             label={getRoleName(role)} 
@@ -282,7 +282,7 @@ const UsersList = () => {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {user.roles.filter(role => role !== 'ROLE_USER').map((role) => (
+                    {user.roles && Array.isArray(user.roles) && user.roles.filter(role => role !== 'ROLE_USER').map((role) => (
                       <Chip 
                         key={role}
                         label={getRoleName(role)} 
