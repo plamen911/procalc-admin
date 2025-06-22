@@ -87,8 +87,16 @@ const UserEdit = () => {
     const fetchUser = async () => {
       try {
         const userData = await UserManagementService.getById(id);
+
+        // Filter out ROLE_USER from roles when setting user state
+        // ROLE_USER is automatically added by the backend and shouldn't be displayed
+        const filteredRoles = Array.isArray(userData.roles) 
+          ? userData.roles.filter(role => role !== 'ROLE_USER')
+          : [];
+
         setUser({
           ...userData,
+          roles: filteredRoles,
           password: '' // Clear password field for security
         });
         setLoading(false);
@@ -213,6 +221,7 @@ const UserEdit = () => {
   const handleRoleChange = (role) => {
     const roleValue = role.value;
     const currentRoles = Array.isArray(user.roles) ? user.roles : [];
+
     const newRoles = currentRoles.includes(roleValue)
       ? currentRoles.filter(r => r !== roleValue)
       : [...currentRoles, roleValue];
@@ -228,6 +237,23 @@ const UserEdit = () => {
     setSaving(true);
     setError(null);
 
+    // Validate that at least one meaningful role is selected
+    const currentRoles = Array.isArray(user.roles) ? user.roles : [];
+    const availableRoleValues = availableRoles.map(role => role.value);
+
+    // Check if a user has at least one role from the available roles
+    const selectedRoles = currentRoles.filter(role => 
+      availableRoleValues.includes(role)
+    );
+
+    if (selectedRoles.length === 0) {
+      const errorMsg = 'Трябва да изберете поне една роля за потребителя';
+      setError(errorMsg);
+      setSaving(false);
+      showErrorToast(errorMsg);
+      return;
+    }
+
     try {
       // Create a copy of user data for submission
       const userData = { ...user };
@@ -237,12 +263,18 @@ const UserEdit = () => {
         delete userData.password;
       }
 
+      // Filter out ROLE_USER from roles before sending to API
+      // ROLE_USER is automatically added by the backend and shouldn't be sent
+      if (userData.roles && Array.isArray(userData.roles)) {
+        userData.roles = userData.roles.filter(role => role !== 'ROLE_USER');
+      }
+
       await UserManagementService.update(id, userData);
       setSaving(false);
       showSuccessToast('Потребителят е обновен успешно');
       navigate('/users');
     } catch (err) {
-      console.error(err);
+      console.error('Error updating user:', err);
       const errorMessage = translateErrorMessage(err.response?.data?.message) || 'Неуспешно обновяване на потребителя';
       setError(errorMessage);
       setSaving(false);
