@@ -258,7 +258,7 @@ const UserEdit = () => {
       // Create a copy of user data for submission
       const userData = { ...user };
 
-      // Remove password if it's empty
+      // Remove the password if it's empty
       if (!userData.password) {
         delete userData.password;
       }

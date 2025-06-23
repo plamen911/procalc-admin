@@ -24,6 +24,7 @@ const InsuranceClauseEdit = () => {
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
+    description: '',
     tariff_number: 0,
     has_tariff_number: false,
     tariff_amount: 0,
@@ -48,6 +49,7 @@ const InsuranceClauseEdit = () => {
         // Ensure that insurance clause with ID = 1 is always active
         setFormData({
           name: clause.name,
+          description: clause.description,
           tariff_number: clause.tariff_number,
           has_tariff_number: clause.has_tariff_number,
           tariff_amount: clause.tariff_amount,
@@ -146,7 +148,7 @@ const InsuranceClauseEdit = () => {
       <Paper elevation={2} sx={{ p: 3 }}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ mb: 2 }}>
               <TextField
                 fullWidth
                 label="Име"
@@ -157,6 +159,20 @@ const InsuranceClauseEdit = () => {
                 variant="outlined"
                 multiline
                 rows={4}
+              />
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 3, mb: 3 }}>
+              <TextField
+                fullWidth
+                label="Описание"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                variant="outlined"
+                multiline
+                rows={8}
+                placeholder="Въведете подробно описание на застрахователната клауза..."
               />
             </Grid>
 
