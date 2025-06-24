@@ -162,20 +162,6 @@ const InsuranceClauseEdit = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sx={{ mt: 3, mb: 3 }}>
-              <TextField
-                fullWidth
-                label="Описание"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                variant="outlined"
-                multiline
-                rows={8}
-                placeholder="Въведете подробно описание на застрахователната клауза..."
-              />
-            </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -255,27 +241,44 @@ const InsuranceClauseEdit = () => {
                 />
               )}
             </Grid>
-
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                <Button
-                  variant="outlined"
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => navigate('/insurance-clauses')}
-                >
-                  Назад
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  startIcon={<SaveIcon />}
-                  disabled={saving}
-                >
-                  {saving ? 'Запазване...' : 'Запази промените'}
-                </Button>
-              </Box>
-            </Grid>
           </Grid>
+
+          <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
+            <TextField
+              fullWidth
+              label="Описание"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              variant="outlined"
+              multiline
+              rows={12}
+              sx={{
+                '& .MuiInputBase-root': {
+                  minHeight: '300px'
+                }
+              }}
+              placeholder="Въведете подробно описание на застрахователната клауза..."
+            />
+            
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
+              <Button
+                variant="outlined"
+                startIcon={<ArrowBackIcon />}
+                onClick={() => navigate('/insurance-clauses')}
+              >
+                Назад
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                startIcon={<SaveIcon />}
+                disabled={saving}
+              >
+                {saving ? 'Запазване...' : 'Запази промените'}
+              </Button>
+            </Box>
+          </Box>
         </form>
       </Paper>
     </Box>
